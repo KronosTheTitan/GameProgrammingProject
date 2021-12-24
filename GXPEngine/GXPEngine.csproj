@@ -79,6 +79,10 @@
     <Compile Include="GXPEngine\SoLoud\Soloud.cs" />
     <Compile Include="GXPEngine\SoLoud\SoloudSoundSystem.cs" />
     <Compile Include="Player.cs" />
+    <Compile Include="Projectile.cs" />
+    <Compile Include="Rocket.cs" />
+    <Compile Include="RocketTank.cs" />
     <Compile Include="Scene.cs" />
+    <Compile Include="Vehicle.cs" />
   </ItemGroup>
 </Project>

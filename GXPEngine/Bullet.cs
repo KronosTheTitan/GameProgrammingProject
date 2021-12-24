@@ -4,15 +4,22 @@ using System.Linq;
 using System.Text;
 using GXPEngine;
 
-class Bullet : Sprite
+class Bullet : Projectile
 {
-    float speed = 1;
-    public Bullet(float direction) : base("colors.png")
+    public Bullet(float direction, float ix, float iy) : base(2)
     {
         rotation = direction;
+        x = ix;
+        y = iy;
     }
-    void Update()
+    public override void onHit(GameObject target)
     {
-        Move(speed * Time.deltaTime, 0);
+        if(target is Vehicle)
+        {
+            Vehicle veh = (Vehicle)target; // casting
+            veh.whenHit(1);
+            Destroy();
+        }
     }
+
 }
