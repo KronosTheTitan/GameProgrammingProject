@@ -12,4 +12,19 @@ class Rocket : Projectile
         x = ix;
         y = iy;
     }
+    public override void onHit(GameObject target,Vehicle shooter)
+    {
+        if (target is Vehicle)
+        {
+            Vehicle veh = (Vehicle)target; // casting
+            veh.whenHit(1);
+            if(shooter is Player)
+            {
+                Player player = (Player)shooter;
+                player.score += veh.scoreValue;
+            }
+            Destroy();
+        }
+
+    }
 }

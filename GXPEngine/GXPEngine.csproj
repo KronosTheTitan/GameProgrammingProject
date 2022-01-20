@@ -37,6 +37,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bullet.cs" />
+    <Compile Include="CoreParameters.cs" />
+    <Compile Include="Explosion.cs" />
     <Compile Include="GXPEngine\AddOns\Gizmos.cs" />
     <Compile Include="GXPEngine\AddOns\SpriteBatch.cs" />
     <Compile Include="GXPEngine\AddOns\TiledLoader.cs" />
@@ -80,6 +82,7 @@
     <Compile Include="GXPEngine\SoLoud\SoloudSoundSystem.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Projectile.cs" />
+    <Compile Include="RandomFloats.cs" />
     <Compile Include="Rocket.cs" />
     <Compile Include="RocketTank.cs" />
     <Compile Include="Scene.cs" />

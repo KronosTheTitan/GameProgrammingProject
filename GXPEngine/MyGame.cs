@@ -22,7 +22,7 @@ public class MyGame : Game
 
 		Scene scene = new Scene();
 		Player player = new Player(scene);
-		Vehicle vehicle = new Vehicle();
+		Vehicle vehicle = new Vehicle(scene);
 		scene.player = player;
 		RocketTank rocketTank = new RocketTank(scene);
 		AddChild(scene);

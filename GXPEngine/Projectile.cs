@@ -6,15 +6,19 @@ using GXPEngine;
 
 class Projectile : Sprite
 {
-    float speed;
+    public float speed;
     public Vehicle shooter;
+    float creationTime;
     public Projectile(float ispeed) : base("circle.png")
     {
         speed = ispeed;
         SetOrigin(width / 2, height / 2);
+        creationTime = Time.time;
     }
     public void Update()
     {
+        if (creationTime + CoreParameters.projectileLifeTime < Time.time)
+            Destroy();
         Move(speed * Time.deltaTime, 0);
         GameObject[] collisions = GetCollisions();
         if (collisions.Length > 0)
@@ -23,12 +27,12 @@ class Projectile : Sprite
             {
                 if (!(gameObject is RocketTank) && gameObject != shooter)
                 {
-                    onHit(gameObject);
+                    onHit(gameObject, shooter);
                 }
             }
         }
     }
-    public virtual void onHit(GameObject target)
+    public virtual void onHit(GameObject target, Vehicle shooter)
     {
 
     }

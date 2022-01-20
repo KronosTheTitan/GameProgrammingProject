@@ -8,20 +8,23 @@ class Player : Vehicle
 {
     public int rockets = 0;
 
-    float movementSpeed = 1;
-    float rotateSpeed = 1;
-    float fireSpeedMS = 1000;
+    public float score;
 
-    float lastShot;
-    Scene activeScene;
-    public Player(Scene scene)
+    public Player(Scene scene) : base(scene)
     {
         SetOrigin(width/2,height/2);
         activeScene = scene;
+        x = activeScene.width/2;
+        y = activeScene.height/2;
         createCollider();
+        health = 5;
     }
-    void Update()
+    public override void Update()
     {
+        if (health <= 0)
+        {
+            Destroy();
+        }
         //Scene.collisionManager.GetCurrentCollisions(this,false,true);
         MovePlayer();
         Shoot();
@@ -56,7 +59,7 @@ class Player : Vehicle
             rotation -= rotateSpeed * Time.deltaTime;
         }
     }
-    void Shoot()
+    public override void Shoot()
     {
         if (Input.GetKey(32) && lastShot + fireSpeedMS < Time.time)
         {
@@ -64,13 +67,14 @@ class Player : Vehicle
             Bullet bullet = new Bullet(rotation-90,x,y);
             bullet.shooter = this;
             activeScene.AddChild(bullet);
-            activeScene.bullets.Add(bullet);
             Console.WriteLine("bullet fired");
         }
         if ((Input.GetKey(86) && lastShot + fireSpeedMS < Time.time) && rockets > 0)
         {
             lastShot = Time.time;
-            activeScene.bullets.Add(new Bullet(rotation-90,x,y));
+            Rocket rocket = new Rocket(rotation-90,x,y);
+            rocket.shooter = this;
+            activeScene.AddChild(rocket);
             rockets--;
             Console.WriteLine("rocket fired");
         }
