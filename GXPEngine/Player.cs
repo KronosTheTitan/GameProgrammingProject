@@ -4,21 +4,27 @@ using System.Linq;
 using System.Text;
 using GXPEngine;
 
-class Player : Sprite
+class Player : Vehicle
 {
-    float movementSpeed = 1;
-    float rotateSpeed = 1;
-    float fireSpeedMS = 1000;
+    public int rockets = 0;
 
-    float lastShot;
-    Scene activeScene = new Scene();
-    public Player() : base("triangle.png")
+    public float score;
+
+    public Player(Scene scene) : base(scene)
     {
         SetOrigin(width/2,height/2);
-        //createCollider();
+        activeScene = scene;
+        x = activeScene.width/2;
+        y = activeScene.height/2;
+        createCollider();
+        health = 5;
     }
-    void Update()
+    public override void Update()
     {
+        if (health <= 0)
+        {
+            Destroy();
+        }
         //Scene.collisionManager.GetCurrentCollisions(this,false,true);
         MovePlayer();
         Shoot();
@@ -27,6 +33,7 @@ class Player : Sprite
     }
     void MovePlayer()
     {
+
         if (Input.GetKey(68))
         {
             Move(movementSpeed * Time.deltaTime, 0);
@@ -52,13 +59,24 @@ class Player : Sprite
             rotation -= rotateSpeed * Time.deltaTime;
         }
     }
-    void Shoot()
+    public override void Shoot()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetKey(32) && lastShot + fireSpeedMS < Time.time)
         {
             lastShot = Time.time;
-            new Bullet(rotation);
-            Console.WriteLine("shot fired");
+            Bullet bullet = new Bullet(rotation-90,x,y);
+            bullet.shooter = this;
+            activeScene.AddChild(bullet);
+            Console.WriteLine("bullet fired");
+        }
+        if ((Input.GetKey(86) && lastShot + fireSpeedMS < Time.time) && rockets > 0)
+        {
+            lastShot = Time.time;
+            Rocket rocket = new Rocket(rotation-90,x,y);
+            rocket.shooter = this;
+            activeScene.AddChild(rocket);
+            rockets--;
+            Console.WriteLine("rocket fired");
         }
     }
 }

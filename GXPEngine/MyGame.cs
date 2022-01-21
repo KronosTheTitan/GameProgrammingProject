@@ -20,8 +20,15 @@ public class MyGame : Game
 		AddChild(canvas);
 		Console.WriteLine("MyGame initialized");
 
-		Sprite player = new Player();
-		AddChild(player);
+		Scene scene = new Scene();
+		Player player = new Player(scene);
+		Vehicle vehicle = new Vehicle(scene);
+		scene.player = player;
+		RocketTank rocketTank = new RocketTank(scene);
+		AddChild(scene);
+		scene.AddChild(player);
+		scene.AddChild(vehicle);
+		scene.AddChild(rocketTank);
 
 		
 	}
