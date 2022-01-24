@@ -14,8 +14,8 @@ class Player : Vehicle
     {
         SetOrigin(width/2,height/2);
         activeScene = scene;
-        x = activeScene.width/2;
-        y = activeScene.height/2;
+        x = 400;
+        y = 300;
         createCollider();
         health = 5;
     }
@@ -27,28 +27,31 @@ class Player : Vehicle
         }
         //Scene.collisionManager.GetCurrentCollisions(this,false,true);
         MovePlayer();
-        Shoot();
         string output = x.ToString() + " , " + y.ToString();
         //Console.WriteLine(output);
     }
     void MovePlayer()
     {
 
-        if (Input.GetKey(68))
+        if (Input.GetKey(68) && x < 800)
         {
-            Move(movementSpeed * Time.deltaTime, 0);
+            //Move(movementSpeed * Time.deltaTime, 0);
+            x += movementSpeed * Time.deltaTime;
         }
-        if (Input.GetKey(65))
+        if (Input.GetKey(65) && x > 0)
         {
-            Move(-movementSpeed * Time.deltaTime, 0);
+            //Move(-movementSpeed * Time.deltaTime, 0);
+            x -= movementSpeed * Time.deltaTime;
         }
-        if (Input.GetKey(87))
+        if (Input.GetKey(87)&& y > 0)
         {
-            Move(0, -movementSpeed * Time.deltaTime);
+            //Move(0, -movementSpeed * Time.deltaTime);
+            y -= movementSpeed * Time.deltaTime;
         }
-        if (Input.GetKey(83))
+        if (Input.GetKey(83) && y < 600)
         {
-            Move(0, movementSpeed * Time.deltaTime);
+            //Move(0, movementSpeed * Time.deltaTime);
+            y += movementSpeed * Time.deltaTime;
         }
         if (Input.GetKey(69))
         {
@@ -58,25 +61,9 @@ class Player : Vehicle
         {
             rotation -= rotateSpeed * Time.deltaTime;
         }
-    }
-    public override void Shoot()
-    {
-        if (Input.GetKey(32) && lastShot + fireSpeedMS < Time.time)
+        if (Input.GetKey(32))
         {
-            lastShot = Time.time;
-            Bullet bullet = new Bullet(rotation-90,x,y);
-            bullet.shooter = this;
-            activeScene.AddChild(bullet);
-            Console.WriteLine("bullet fired");
-        }
-        if ((Input.GetKey(86) && lastShot + fireSpeedMS < Time.time) && rockets > 0)
-        {
-            lastShot = Time.time;
-            Rocket rocket = new Rocket(rotation-90,x,y);
-            rocket.shooter = this;
-            activeScene.AddChild(rocket);
-            rockets--;
-            Console.WriteLine("rocket fired");
+            Shoot();
         }
     }
 }

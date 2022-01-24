@@ -6,7 +6,7 @@ using GXPEngine;
 
 class Rocket : Projectile
 {
-    public Rocket(float direction, float ix, float iy) : base(1)
+    public Rocket(float direction, float ix, float iy,Vehicle shooter) : base(1,shooter)
     {
         rotation = direction;
         x = ix;

@@ -6,10 +6,10 @@ using GXPEngine;
 
 class Vehicle : Sprite
 {
-    public int health = 3;
-    public float fireSpeedMS = 1000;
+    public int health = 1;
+    float fireSpeedMS = 500;
 
-    public float lastShot;
+    float lastShot;
     public float scoreValue = CoreParameters.scoreLvL1;
 
     public float movementSpeed = 1;
@@ -25,6 +25,7 @@ class Vehicle : Sprite
         x = 250;
         y = 250;
         createCollider();
+        lastShot = Time.time + Utils.Random(1000,1500);
     }
     public void Start()
     {
@@ -34,8 +35,7 @@ class Vehicle : Sprite
     {
         if(health <= 0)
         {
-            activeScene.enemies.Remove(this);
-            Destroy();
+            activeScene.RemoveEnemy(this);
         }
         Shoot();
         AI();
@@ -45,24 +45,31 @@ class Vehicle : Sprite
     {
         health -= damage;
     }
-    public virtual void Shoot()
+    public void Shoot()
     {
         if (lastShot + fireSpeedMS < Time.time)
         {
             lastShot = Time.time;
-            Bullet bullet = new Bullet(rotation - 90, x, y);
-            bullet.shooter = this;
+            Bullet bullet = new Bullet(rotation - 90, x, y,this);
             activeScene.AddChild(bullet);
         }
     }
     public virtual void AI()
     {
-        targetRotation = Mathf.Atan2(activeScene.player.y, activeScene.player.x);
-        if(targetRotation != rotation - 10 || targetRotation != rotation + 10)
+        if (Input.GetKey(Key.LEFT_SHIFT))
         {
-            //rotation -= rotateSpeed * Time.deltaTime;
+            Console.WriteLine("Player pos: {0},{1}",activeScene.player.x, activeScene.player.y);
+            Console.WriteLine("My pos: {0},{1}",x,y);
         }
-        if(DistanceTo(activeScene.player)>200)
+        targetRotation = Mathf.Atan2(activeScene.player.y - y, activeScene.player.x - x) * 180 / (Mathf.PI); // convert from radians to degrees
+        targetRotation += 90; // to correc for the sprite rotation
+        if(targetRotation <= rotation - 10)
+        {
+            rotation -= rotateSpeed * Time.deltaTime;
+        }
+        if (targetRotation >= rotation + 10)
+            rotation += rotateSpeed * Time.deltaTime;
+        if (DistanceTo(activeScene.player)>200)
         {
             
         }

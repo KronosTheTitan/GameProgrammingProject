@@ -7,11 +7,12 @@ using GXPEngine;
 class Projectile : Sprite
 {
     public float speed;
-    public Vehicle shooter;
+    Vehicle shooter;
     float creationTime;
-    public Projectile(float ispeed) : base("circle.png")
+    public Projectile(float ispeed, Vehicle iShooter) : base("circle.png")
     {
         speed = ispeed;
+        shooter = iShooter;
         SetOrigin(width / 2, height / 2);
         creationTime = Time.time;
     }

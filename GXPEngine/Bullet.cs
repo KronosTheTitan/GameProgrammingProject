@@ -6,10 +6,9 @@ using GXPEngine;
 
 class Bullet : Projectile
 {
-    public Bullet(float direction, float ix, float iy) : base(2)
+    public Bullet(float direction, float ix, float iy,Vehicle shooter) : base(0.5f,shooter)
     {
         rotation = direction;
-        speed = 1;
         x = ix;
         y = iy;
     }
@@ -28,7 +27,9 @@ class Bullet : Projectile
             }
             else
             {
-
+                if (veh is Player)
+                    veh.whenHit(1);
+                Destroy();
             }
         }
     }

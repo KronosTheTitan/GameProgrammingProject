@@ -3,17 +3,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using GXPEngine;
-class Scene : Sprite
+class Scene : GameObject
 {
-    public Player player;
-    public CollisionManager collisionManager = new CollisionManager();
-    public List<Vehicle> enemies = new List<Vehicle>();
-    public Scene() : base("checkers.png")
+    public Player player { get; private set; } // only public get, no public set
+    EasyDraw UI;
+
+    List<Vehicle> enemies = new List<Vehicle>();
+    public Scene()
     {
         enemies.Clear();
+        player = new Player(this);
+        AddChild(player);
+        UI = new EasyDraw(800, 600);
+        AddChild(UI);
     }
-    public void Update()
+    void UpdateUI()
     {
+        UI.Clear(0, 0, 0, 0);
+        UI.TextAlign(CenterMode.Min, CenterMode.Min);
+        UI.Text(player.health.ToString(), 700, 0);
+        UI.TextAlign(CenterMode.Min, CenterMode.Min);
+        UI.Text((player.score * 1000).ToString(), 0, 0);
+
+    }
+    void Update()
+    {
+        UpdateUI();
         if (enemies.Count < player.score + 3)
         {
             var newEnemy = new Vehicle(this);
@@ -21,16 +36,31 @@ class Scene : Sprite
             AssignSpawnPosition(newEnemy);
         }        
     }
-    public void AssignSpawnPosition(Vehicle vehicle)
+    void AssignSpawnPosition(Vehicle vehicle)
     {
         bool valid = false;
         while (!valid)
         {
             vehicle.x = RandomFloat.GetRandom(0, 800);
             vehicle.y = RandomFloat.GetRandom(0, 600);
-            if (player.DistanceTo(vehicle) > 5)
-                valid = true;
+            vehicle.rotation = Utils.Random(0, 359);
+            if (player.DistanceTo(vehicle) > 50)
+            {
+                if (vehicle.y < player.y)
+                    valid = true;
+                else
+                {
+                    if (vehicle.x > player.x + 50 || vehicle.x < player.x - 50)
+                        valid = true;
+                }
+            }
         }
         this.AddChild(vehicle);
+    }
+    public void RemoveEnemy(Vehicle vehicle)
+    {
+        enemies.Remove(vehicle);
+        RemoveChild(vehicle);
+        vehicle.Destroy();
     }
 }
