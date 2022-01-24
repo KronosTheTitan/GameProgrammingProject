@@ -13,18 +13,17 @@ class Vehicle : Sprite
     public float scoreValue = CoreParameters.scoreLvL1;
 
     public float movementSpeed = 1;
-    public float rotateSpeed = 1;
+    public float rotateSpeed = 0.2f;
 
-    public float targetRotation;
+    float targetRotation;
 
     public Scene activeScene;
     public Vehicle(Scene scene) : base("triangle.png")
     {
         SetOrigin(width / 2, height / 2);
         activeScene = scene;
-        x = 250;
-        y = 250;
         createCollider();
+        health = CoreParameters.healthLvl1;
         lastShot = Time.time + Utils.Random(1000,1500);
     }
     public void Start()
@@ -37,7 +36,6 @@ class Vehicle : Sprite
         {
             activeScene.RemoveEnemy(this);
         }
-        Shoot();
         AI();
         //rotation += LookAt(scene.Player);
     }
@@ -69,9 +67,9 @@ class Vehicle : Sprite
         }
         if (targetRotation >= rotation + 10)
             rotation += rotateSpeed * Time.deltaTime;
-        if (DistanceTo(activeScene.player)>200)
+        if (DistanceTo(activeScene.player)<400)
         {
-            
+            Shoot();
         }
     }
 }

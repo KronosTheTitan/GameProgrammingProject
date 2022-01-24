@@ -18,6 +18,7 @@ class Rocket : Projectile
         {
             Vehicle veh = (Vehicle)target; // casting
             veh.whenHit(1);
+            Explosion explosion = new Explosion(CoreParameters.rocketExplosionSize,shooter.activeScene);
             if(shooter is Player)
             {
                 Player player = (Player)shooter;

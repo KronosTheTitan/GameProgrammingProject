@@ -17,12 +17,13 @@ class Player : Vehicle
         x = 400;
         y = 300;
         createCollider();
-        health = 5;
+        health = 15;
     }
     public override void Update()
     {
         if (health <= 0)
         {
+            
             Destroy();
         }
         //Scene.collisionManager.GetCurrentCollisions(this,false,true);

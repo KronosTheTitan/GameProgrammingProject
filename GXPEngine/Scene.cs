@@ -7,6 +7,7 @@ class Scene : GameObject
 {
     public Player player { get; private set; } // only public get, no public set
     EasyDraw UI;
+    bool playerAlive = true;
 
     List<Vehicle> enemies = new List<Vehicle>();
     public Scene()
@@ -29,7 +30,7 @@ class Scene : GameObject
     void Update()
     {
         UpdateUI();
-        if (enemies.Count < player.score + 3)
+        if (enemies.Count < player.score + 3 && playerAlive)
         {
             var newEnemy = new Vehicle(this);
             enemies.Add(newEnemy);
@@ -62,5 +63,13 @@ class Scene : GameObject
         enemies.Remove(vehicle);
         RemoveChild(vehicle);
         vehicle.Destroy();
+    }
+    public void GameOver()
+    {
+        foreach(Vehicle vehicle in enemies)
+        {
+            RemoveEnemy(vehicle);
+        }
+        playerAlive = false;
     }
 }
