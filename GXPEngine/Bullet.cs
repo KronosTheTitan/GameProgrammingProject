@@ -6,9 +6,10 @@ using GXPEngine;
 
 class Bullet : Projectile
 {
-    public Bullet(float direction, float ix, float iy,Vehicle shooter) : base(0.5f,shooter)
+    public Bullet(float direction, float ix, float iy,Vehicle shooter) : base(0.5f,shooter, "PNG/Sprites/Missiles/spaceMissiles_018.png")
     {
-        rotation = direction;
+        rotation = direction-90;
+        SetScaleXY(-1);
         x = ix;
         y = iy;
     }
@@ -20,15 +21,24 @@ class Bullet : Projectile
             if (shooter is Player)
             {
                 Player player = (Player)shooter;
-                veh.whenHit(1);
-                if(veh.health == 0)
+                veh.ChangeHealth(-1,true);
+                if(veh.ChangeHealth(0,false) == 0)
                     player.score += veh.scoreValue;
                 Destroy();
             }
             else
             {
                 if (veh is Player)
-                    veh.whenHit(1);
+                    veh.ChangeHealth(-1,true);
+                shooter.activeScene.RemoveChild(this);
+                Destroy();
+            }
+        }
+        else
+        {
+            if(target is Asteroid)
+            {
+                shooter.activeScene.RemoveChild(this);
                 Destroy();
             }
         }

@@ -7,12 +7,12 @@ using GXPEngine;
 class RocketTank : Sprite
 {
     Scene activeScene;
-    public RocketTank(Scene scene) : base("colors.png")
+    public RocketTank(Scene scene) : base("PNG/Sprites/Building/spaceBuilding_001.png")
     {
         activeScene = scene;
         createCollider();
-        x = 100;
-        y = 100;
+        x = Utils.Random(0,800);
+        y = Utils.Random(0,600);
     }
     void Update()
     {
@@ -22,7 +22,8 @@ class RocketTank : Sprite
     {
         if (HitTest(activeScene.player))
         {
-            activeScene.player.rockets += 1;
+            activeScene.player.ChangeRockets(1);
+            activeScene.rocketTank = null;
             Destroy();
         }
     }

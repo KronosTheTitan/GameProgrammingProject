@@ -9,18 +9,20 @@ class Projectile : Sprite
     public float speed;
     Vehicle shooter;
     float creationTime;
-    public Projectile(float ispeed, Vehicle iShooter) : base("circle.png")
+    bool expires;
+    public Projectile(float ispeed, Vehicle iShooter,string sprite,bool iexpires = true) : base(sprite)
     {
         speed = ispeed;
         shooter = iShooter;
+        expires = iexpires;
         SetOrigin(width / 2, height / 2);
         creationTime = Time.time;
     }
     public void Update()
     {
-        if (creationTime + CoreParameters.projectileLifeTime < Time.time)
+        if (creationTime + CoreParameters.projectileLifeTime < Time.time && expires)
             Destroy();
-        Move(speed * Time.deltaTime, 0);
+        Move(0, speed * Time.deltaTime);
         GameObject[] collisions = GetCollisions();
         if (collisions.Length > 0)
         {

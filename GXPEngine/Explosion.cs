@@ -3,12 +3,19 @@ using GXPEngine;
 class Explosion : Sprite
 {
     float creationTime;
+    Sound sound = new Sound("mixkit-fire-explosion-1343.wav");
     Scene scene;
-    public Explosion(float size, Scene iScene) : base("Square")
+    public Explosion(float size, Scene iScene,float ix,float iy) : base("PNG/Sprites/Effects/spaceEffects_016.png")
     {
         creationTime = Time.time;
+        SetOrigin(width / 2, height / 2);
+        scale = size;
         scene = iScene;
+        x = ix;
+        y = iy;
+        scene.AddChild(this);
         createCollider();
+        sound.Play();        
     }
     void Update()
     {
@@ -16,6 +23,19 @@ class Explosion : Sprite
         {
             scene.RemoveChild(this);
             Destroy();
+        }
+        GameObject[] collisions = GetCollisions();
+        if (collisions.Length > 0)
+        {
+            foreach (GameObject gameObject in collisions)
+            {
+                if(gameObject is Vehicle)
+                {
+                    Vehicle veh = (Vehicle)gameObject;
+                    veh.ChangeHealth(-2,false);
+                    scene.player.score += veh.scoreValue;
+                }
+            }
         }
     }
 }

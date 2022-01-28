@@ -36,12 +36,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Asteroid.cs" />
     <Compile Include="Bullet.cs" />
     <Compile Include="CoreParameters.cs" />
+    <Compile Include="Enemy1.cs" />
     <Compile Include="Explosion.cs" />
     <Compile Include="GXPEngine\AddOns\Gizmos.cs" />
     <Compile Include="GXPEngine\AddOns\SpriteBatch.cs" />
     <Compile Include="GXPEngine\AddOns\TiledLoader.cs" />
+    <Compile Include="MainMenu.cs" />
     <Compile Include="MyGame.cs" />
     <Compile Include="GXPEngine\Core\Canvas.cs" />
     <Compile Include="GXPEngine\Game.cs" />
@@ -86,6 +89,7 @@
     <Compile Include="Rocket.cs" />
     <Compile Include="RocketTank.cs" />
     <Compile Include="Scene.cs" />
+    <Compile Include="StartButton.cs" />
     <Compile Include="Vehicle.cs" />
   </ItemGroup>
 </Project>
