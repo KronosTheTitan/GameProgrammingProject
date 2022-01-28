@@ -17,6 +17,7 @@ class CoreParameters
     //this controls after how much time in seconds a projectile will disappear.
     public const float projectileLifeTime = 5000f;
 
+    //the player health
     public const int playerHealth = 15;
 
     public const float playerMoveSpeed = 1f;

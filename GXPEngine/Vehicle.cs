@@ -7,9 +7,9 @@ using GXPEngine;
 class Vehicle : Sprite
 {
     int health = 0;
-    float fireSpeedMS = 500;
+    public float fireSpeedMS = 500;
 
-    float lastShot;
+    public float lastShot;
     public float scoreValue = CoreParameters.scoreLvL1;
 
     float rotateSpeed = 0.2f;
@@ -54,15 +54,6 @@ class Vehicle : Sprite
             lastShot = Time.time;
             Bullet bullet = new Bullet(rotation - 90, x, y,this);
             activeScene.AddChild(bullet);
-        }
-    }
-    public void ShootRocket(int rocketcount)
-    {
-        if (lastShot + fireSpeedMS < Time.time && rocketcount > 0)
-        {
-            lastShot = Time.time;
-            Rocket rocket = new Rocket(rotation - 90, x, y, this);
-            activeScene.AddChild(rocket);
         }
     }
     void AI()

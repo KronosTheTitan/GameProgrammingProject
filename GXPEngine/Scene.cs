@@ -35,6 +35,7 @@ class Scene : GameObject
         UI.Text(player.ChangeHealth(0,false).ToString(), 700, 0);
         UI.TextAlign(CenterMode.Min, CenterMode.Min);
         UI.Text(Math.Round((player.score * 1000)).ToString(), 0, 0);
+        UI.Text(player.ChangeRockets(0).ToString(), 0, 20);
 
     }
     void Update()
@@ -61,7 +62,7 @@ class Scene : GameObject
             sprite.x = RandomFloat.GetRandom(0, 800);
             sprite.y = RandomFloat.GetRandom(0, 600);
             sprite.rotation = Utils.Random(0, 359);
-            GameObject[] collisions = GetCollisions();
+            GameObject[] collisions = sprite.GetCollisions();
             if (player.DistanceTo(sprite) > 200 || sprite is Player)
             {
                 if(collisions.Length <= 0)

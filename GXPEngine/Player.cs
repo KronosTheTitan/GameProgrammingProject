@@ -6,7 +6,7 @@ using GXPEngine;
 
 class Player : Vehicle
 {
-    int rockets = 10;
+    int rockets = 0;
 
     public float score;
 
@@ -15,17 +15,17 @@ class Player : Vehicle
 
     public Player(Scene scene) : base(scene, "PNG/Sprites/Ships/spaceShips_007.png")
     {
-        SetOrigin(width/2,height/2);
+        SetOrigin(width / 2, height / 2);
         scale = 0.5f;
         activeScene = scene;
         x = 400;
         y = 300;
         createCollider();
-        ChangeHealth(14,false);
+        ChangeHealth(14, false);
     }
     public override void Update()
     {
-        if (ChangeHealth(0,false) <= 0)
+        if (ChangeHealth(0, false) <= 0)
         {
             activeScene.GameOver();
             Destroy();
@@ -48,7 +48,7 @@ class Player : Vehicle
             //Move(-movementSpeed * Time.deltaTime, 0);
             x -= movementSpeed * Time.deltaTime;
         }
-        if (Input.GetKey(87)&& y > 0)
+        if (Input.GetKey(87) && y > 0)
         {
             //Move(0, -movementSpeed * Time.deltaTime);
             y -= movementSpeed * Time.deltaTime;
@@ -75,8 +75,20 @@ class Player : Vehicle
             ShootRocket(rockets);
         }
     }
-    public void ChangeRockets(int input)
+    public int ChangeRockets(int input)
     {
         rockets += input;
+        return rockets;
+    }
+    void ShootRocket(int rocketcount)
+    {
+        if (lastShot + fireSpeedMS < Time.time && rocketcount > 0)
+        {
+            lastShot = Time.time;
+            rockets--;
+            Rocket rocket = new Rocket(rotation - 90, x, y, this);
+            activeScene.AddChild(rocket);
+        }
+
     }
 }
