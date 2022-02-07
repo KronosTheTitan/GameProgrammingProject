@@ -1,11 +1,11 @@
 using GXPEngine;
 
-class Explosion : Sprite
+class Explosion : AnimationSprite
 {
     float creationTime;
     Sound sound = new Sound("mixkit-fire-explosion-1343.wav");
     Scene scene;
-    public Explosion(float size, Scene iScene,float ix,float iy) : base("PNG/Sprites/Effects/spaceEffects_016.png")
+    public Explosion(float size, Scene iScene,float ix,float iy) : base("explosion1.png",8,8)
     {
         creationTime = Time.time;
         SetOrigin(width / 2, height / 2);
@@ -13,8 +13,9 @@ class Explosion : Sprite
         scene = iScene;
         x = ix;
         y = iy;
+        SetFrame(0);
+        SetCycle(1, 64);
         scene.AddChild(this);
-        createCollider();
         sound.Play();        
     }
     void Update()
@@ -37,5 +38,6 @@ class Explosion : Sprite
                 }
             }
         }
+        Animate(0.4f);
     }
 }

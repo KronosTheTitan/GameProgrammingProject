@@ -10,7 +10,6 @@ class RocketTank : Sprite
     public RocketTank(Scene scene) : base("PNG/Sprites/Building/spaceBuilding_001.png")
     {
         activeScene = scene;
-        createCollider();
         x = Utils.Random(0,800);
         y = Utils.Random(0,600);
     }

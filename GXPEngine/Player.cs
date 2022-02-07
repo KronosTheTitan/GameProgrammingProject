@@ -6,7 +6,7 @@ using GXPEngine;
 
 class Player : Vehicle
 {
-    int rockets = 0;
+    int rockets = 15;
 
     public float score;
 
@@ -20,7 +20,6 @@ class Player : Vehicle
         activeScene = scene;
         x = 400;
         y = 300;
-        createCollider();
         ChangeHealth(14, false);
     }
     public override void Update()

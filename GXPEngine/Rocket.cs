@@ -9,6 +9,7 @@ class Rocket : Projectile
     public Rocket(float direction, float ix, float iy, Vehicle shooter) : base(1, shooter, "PNG/Sprites/Missiles/spaceMissiles_021.png")
     {
         rotation = direction - 90;
+        SetScaleXY(-1);
         x = ix;
         y = iy;
     }

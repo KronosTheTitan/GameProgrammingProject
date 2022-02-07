@@ -16,7 +16,7 @@ class MainMenu : GameObject
         myGame = iMyGame;
         button = new StartButton();
         AddChild(button);
-        UI = new EasyDraw(800,600);
+        UI = new EasyDraw(800,600,false);
         AddChild(UI);
         ReadHighScore();
     }

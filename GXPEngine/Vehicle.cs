@@ -21,7 +21,6 @@ class Vehicle : Sprite
     {
         SetOrigin(width / 2, height / 2);
         activeScene = scene;
-        createCollider();
         lastShot = Time.time + Utils.Random(1000,1500);
         ChangeHealth(CoreParameters.healthLvl1,false);
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using GXPEngine;
+using TiledMapParser;
 class Scene : GameObject
 {
     public Player player { get; private set; } // only public get, no public set
@@ -12,20 +13,17 @@ class Scene : GameObject
 
     List<Vehicle> enemies = new List<Vehicle>();
     public RocketTank rocketTank;
-    Asteroid[] asteroids = new Asteroid[3];
     float lastRocket = 0;
+
+    TiledLoader loader = new TiledLoader("main.tmx");
     public Scene(MainMenu iMainMenu)
     {
         mainMenu = iMainMenu;
+        CreateScene();
         enemies.Clear();
         player = new Player(this);
         AddChild(player);
-        for (int i = 0; i < 3; i++)
-        {
-            asteroids[i] = new Asteroid(Utils.Random(1, 2), this);
-        }
-        AssignObjectPosition(player);
-        UI = new EasyDraw(800, 600);
+        UI = new EasyDraw(800, 600,false);
         AddChild(UI);
     }
     void UpdateUI()
@@ -54,29 +52,52 @@ class Scene : GameObject
         }
         UpdateUI();
     }
-    void AssignObjectPosition(Sprite sprite)
+    bool AssignObjectPosition(Sprite sprite)
     {
         bool valid = false;
-        while (!valid)
+        sprite.x = RandomFloat.GetRandom(0, 800);
+        sprite.y = RandomFloat.GetRandom(0, 600);
+        sprite.rotation = Utils.Random(0, 359);
+        this.AddChild(sprite);
+        GameObject[] collisions = sprite.GetCollisions();
+        if (player.DistanceTo(sprite) > 200)
         {
-            sprite.x = RandomFloat.GetRandom(0, 800);
-            sprite.y = RandomFloat.GetRandom(0, 600);
-            sprite.rotation = Utils.Random(0, 359);
-            GameObject[] collisions = sprite.GetCollisions();
-            if (player.DistanceTo(sprite) > 200 || sprite is Player)
+            if (collisions.Length < 1)
             {
-                if(collisions.Length <= 0)
+                Console.WriteLine("ouside of collision " + collisions.Length);
+                valid = true;
+            }
+            else
+            {
+                Console.WriteLine("Collision! at x : " + sprite.x + " y : " + sprite.y + " count : " + collisions.Length);
+                foreach(GameObject gameObject in collisions)
                 {
-                    Console.WriteLine("ouside of collision " + collisions.Length);
-                    valid = true;
+                    Console.WriteLine(gameObject.GetType());
                 }
             }
         }
-        this.AddChild(sprite);
-        Console.WriteLine("complete");
+        if (!valid)
+        {
+            if (sprite is Vehicle && !(sprite is Player))
+            {
+                Vehicle veh = (Vehicle)sprite;
+                RemoveEnemy(veh);
+                return true;
+            }
+            else
+            {
+                if (sprite is RocketTank)
+                    rocketTank = null;
+                sprite.Destroy();
+                return false;
+            }
+        }                                                             
+        else
+            return true;
     }
     public void RemoveEnemy(Vehicle vehicle)
     {
+        Console.WriteLine("removed Enemy");
         enemies.Remove(vehicle);
         RemoveChild(vehicle);
         vehicle.Destroy();
@@ -90,5 +111,17 @@ class Scene : GameObject
             mainMenu.SaveHighScore();
         }
         Destroy();
+    }
+    void CreateScene(bool includeImageLayers = true)
+    {
+        loader.autoInstance = true;
+        loader.addColliders = false;
+        loader.rootObject = game;
+        if (includeImageLayers) loader.LoadImageLayers();
+        loader.rootObject = this;
+        loader.LoadTileLayers(0);
+        loader.addColliders = true;
+        loader.LoadTileLayers(1);
+        loader.LoadObjectGroups();
     }
 }
